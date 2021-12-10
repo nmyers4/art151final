@@ -1,16 +1,22 @@
 var song;
 var bg;
 var rainArr = [];
+var bananas = [];
+let animation = [];
+var spriteSheet;
 
 function preload() 
 {
-  song = loadSound('https://art151final.s3.us-west-2.amazonaws.com/Stickerbush+Symphony+Restored+to+HD.mp3');
-  bg = loadImage('https://art151final.s3.us-west-2.amazonaws.com/background.png');
+  song = loadSound('stickerbrush.mp3');
+  bg = loadImage('background.jpg');
+  spriteSheet = loadImage('updated_object_sprite_sheet.png');
+  spriteData = loadJSON('frames.json');
 }
+  
  
 function setup() 
 {
-  createCanvas(1600, 900);
+  createCanvas(1920, 1080);
   
   song.loop();
   
@@ -19,19 +25,33 @@ function setup()
   for(var i = 0; i < 400; i++) {
     rainArr[i] = new rain();
   }
+  
+  let frames = spriteData.frames;
+  for (let i = 0; i < frames.length; i++) {
+    let pos = frames[i].position;
+    let img = spriteSheet.get(pos.x, pos.y, pos.w, pos.h);
+    animation.push(img);
+  }
+
+  for (let i = 0; i < 50; i++) {
+    bananas[i] = new Sprite(animation, 0, i * 75, 0.1);
+  }
 }
  
 function draw()
 {
   background(bg);
   
-  for(var i = 0; i < 400; i++) {
+  for(var i = 0; i < 10; i++) {
   rainArr[i].show();
   rainArr[i].update();
   }
   
   playSong();
-    
+  for (let banana of bananas) {
+    banana.show();
+    banana.animate();
+  }  
 }
 
 function rain() {
@@ -41,11 +61,11 @@ function rain() {
   this.show = function() {
     noStroke();
     fill(0, 0, 255);
-    ellipse(this.x, this.y, random(1, 5), random(1, 5));   
+    ellipse(this.x, this.y, random(1, 5), random(1, 5));
   }
   this.update = function() {
     this.speed = random(5, 10);
-    this.gravity = 1.05;
+    this.gravity = 0.05;
     this.y = this.y + this.speed*this.gravity;  
     
     if (this.y > height) {
@@ -53,6 +73,7 @@ function rain() {
       this.gravity = 0;
     }
   }
+  
 }
  
 function playSong() 
