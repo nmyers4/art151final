@@ -29,8 +29,12 @@ function setup()
   let frames = spriteData.frames;
   for (let i = 0; i < frames.length; i++) {
     let pos = frames[i].position;
-    let img = spriteSheet.get(pos.x, pos.y, pos.w, pos.h);
+    img.resize(25, 50)
     animation.push(img);
+  }
+
+  for (let i = 0; i < 50; i++) {
+    bananas[i] = new Sprite(animation, random(0, 100), i * 75, 0.1);
   }
 
   for (let i = 0; i < 50; i++) {
@@ -83,4 +87,14 @@ function playSong()
     song.play();
   } 
 }
+function mousePressed()
+{
+  if (song.isPlaying())
+    {
+      song.stop()
+    }
+  else
+    {
+      song.play();
+    }
  
