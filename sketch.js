@@ -19,7 +19,7 @@ function setup()
   createCanvas(1920, 1080);
   
   song.loop();
-  
+  getAudioContext().resume();
   song.stop();
   
   for(var i = 0; i < 400; i++) {
